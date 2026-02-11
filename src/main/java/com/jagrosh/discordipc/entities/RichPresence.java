@@ -272,8 +272,8 @@ public class RichPresence {
      * <a href="https://discord.com/developers/docs/rich-presence/how-to#updating-presence-update-presence-payload-fields">here</a>
      */
     public static class Builder {
-        private ActivityType activityType;
-        private StatusDisplayType statusDisplayType;
+        private ActivityType activityType = ActivityType.Playing;
+        private StatusDisplayType statusDisplayType = StatusDisplayType.Name;
         private String state;
         private String stateUrl;
         private String details;
@@ -290,7 +290,7 @@ public class RichPresence {
         private String partyId;
         private int partySize;
         private int partyMax;
-        private PartyPrivacy partyPrivacy;
+        private PartyPrivacy partyPrivacy = PartyPrivacy.Private;
         private String matchSecret;
         private String joinSecret;
         private String spectateSecret;
