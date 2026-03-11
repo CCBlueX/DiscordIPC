@@ -1,0 +1,38 @@
+name: Maven Snapshot Publish
+
+on:
+  push:
+
+jobs:
+  publish-snapshot:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up JDK 21
+        uses: actions/setup-java@v5
+        with:
+          java-version: '21'
+          distribution: 'temurin'
+          cache: maven
+          server-id: ccbluex-snapshots
+          server-username: MAVEN_TOKEN_NAME
+          server-password: MAVEN_TOKEN_SECRET
+
+      - name: Ensure snapshot version
+        run: |
+          VERSION=$(mvn -q -DforceStdout help:evaluate -Dexpression=project.version)
+          if [[ "$VERSION" != *-SNAPSHOT ]]; then
+            mvn --batch-mode --no-transfer-progress \
+              versions:set \
+              -DnewVersion="${VERSION}-SNAPSHOT" \
+              -DgenerateBackupPoms=false
+          fi
+
+      - name: Publish snapshot to CCBlueX Maven
+        run: mvn --batch-mode --no-transfer-progress clean deploy
+        env:
+          MAVEN_TOKEN_NAME: ${{ secrets.MAVEN_TOKEN_NAME }}
+          MAVEN_TOKEN_SECRET: ${{ secrets.MAVEN_TOKEN_SECRET }}

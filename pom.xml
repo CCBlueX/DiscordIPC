@@ -72,5 +72,19 @@
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
     </properties>
+
+    <distributionManagement>
+        <repository>
+            <id>ccbluex-releases</id>
+            <name>CCBlueX Releases</name>
+            <url>https://maven.ccbluex.net/releases</url>
+        </repository>
+        <snapshotRepository>
+            <id>ccbluex-snapshots</id>
+            <name>CCBlueX Snapshots</name>
+            <url>https://maven.ccbluex.net/snapshots</url>
+        </snapshotRepository>
+    </distributionManagement>
+
     <name>DiscordIPC</name>
 </project>

@@ -1,0 +1,29 @@
+name: Maven Publish
+
+on:
+  release:
+    types: [published]
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up JDK 21
+        uses: actions/setup-java@v5
+        with:
+          java-version: '21'
+          distribution: 'temurin'
+          cache: maven
+          server-id: ccbluex-releases
+          server-username: MAVEN_TOKEN_NAME
+          server-password: MAVEN_TOKEN_SECRET
+
+      - name: Publish release to CCBlueX Maven
+        run: mvn --batch-mode --no-transfer-progress clean deploy
+        env:
+          MAVEN_TOKEN_NAME: ${{ secrets.MAVEN_TOKEN_NAME }}
+          MAVEN_TOKEN_SECRET: ${{ secrets.MAVEN_TOKEN_SECRET }}
